@@ -1,0 +1,56 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: ukhozi
+
+jobs:
+  main:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: install trunk
+        run: |
+          cargo install --locked trunk
+          rustup target add wasm32-unknown-unknown
+
+      - name: build
+        run: trunk build --release
+
+      - name: test
+        run: cargo test --release --verbose
+
+      - name: authenticate to githib registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: build docker
+        run: |
+          docker build . --file Dockerfile --tag $IMAGE_NAME
+
+      - name: publish docker
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+          # Strip git ref prefix from version
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+
+          # Use Docker `latest` tag convention
+          [ "$VERSION" == "main" ] && VERSION=latest
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION

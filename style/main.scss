@@ -1,0 +1,94 @@
+@import "_cssreset";
+@import "_fonts";
+
+$fontSize: 0.85em;
+$spacing: 10px;
+$transitionSpeed: 0.2s;
+$borderRadius: 4px;
+
+:root {
+  --colorBackground: #2b3434;
+  --colorAccent: #3f4b4c;
+  --colorText: #00cfff;
+}
+
+html {
+  touch-action: manipulation;
+
+  * {
+    box-sizing: border-box;
+    outline: none;
+    transition-property: none;
+    transition-duration: $transitionSpeed;
+    scrollbar-width: thin;
+    scrollbar-color: var(--colorAccent) var(--colorBackground);
+  }
+
+  body {
+    overscroll-behavior: contain;
+    font-family: OpenSans;
+    font-size: $fontSize;
+    font-weight: normal;
+
+    background: var(--colorBackground);
+    color: var(--colorText);
+
+    display: flex;
+    flex-direction: column;
+    padding: $spacing * 3 $spacing;
+    gap: $spacing;
+  }
+}
+
+input {
+  padding: 0 $spacing;
+}
+
+button {
+  min-width: 45px;
+  cursor: pointer;
+
+  svg path {
+    stroke: var(--colorText);
+  }
+
+  &:hover,
+  &:active {
+    background-color: var(--colorText);
+
+    svg path {
+      stroke: var(--colorAccent);
+    }
+  }
+}
+
+input,
+button {
+  background-color: var(--colorAccent);
+  border: none;
+  border-radius: $borderRadius;
+  color: var(--colorText);
+}
+
+.list {
+  align-self: center;
+  width: 100%;
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+}
+
+.item {
+  display: flex;
+  gap: $spacing;
+  height: 45px;
+
+  > :first-child {
+    flex-grow: 1;
+  }
+
+  > :last-child {
+    min-width: 45px;
+  }
+}
