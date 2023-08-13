@@ -1,10 +1,10 @@
-use crate::models::{State, StateAction};
+use crate::models::{Item, State, StateAction};
 use bounce::use_slice;
 use yew::prelude::*;
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
-    pub item_id: AttrValue,
+    pub item: Item,
 }
 
 #[function_component(ItemCheck)]
@@ -15,28 +15,31 @@ pub fn item_check(props: &Props) -> Html {
         let state = state.clone();
 
         use_callback(
-            move |_, item_id| {
-                state.dispatch(StateAction::Remove {
-                    id: item_id.to_string(),
+            move |_, item| {
+                state.dispatch(StateAction::SetChecked {
+                    id: item.id.to_string(),
+                    checked: !item.checked,
                 })
             },
-            props.item_id.clone(),
+            props.item.clone(),
         )
     };
 
+    let mut class = classes!("item-check");
+    if props.item.checked {
+        class.push("checked");
+    }
+
     html! {
         <button onclick={on_checked}
+            class="item-check"
             tabindex="-1"
         >
-            <svg viewBox="0 0 24 24"
-                fill="none"
-            >
-                <path d="M4 12.6111L8.92308 17.5L20 6.5"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                />
-            </svg>
+            if props.item.checked {
+                <svg viewBox="0 -960 960 960">
+                    <path d="M378-246 154-470l43-43 181 181 384-384 43 43-427 427Z"/>
+                </svg>
+            }
         </button>
     }
 }

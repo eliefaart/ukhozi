@@ -1,15 +1,16 @@
 @import "_cssreset";
 @import "_fonts";
 
-$fontSize: 0.85em;
-$spacing: 10px;
+$fontSize: 0.9em;
+$spacing: 15px;
 $transitionSpeed: 0.2s;
 $borderRadius: 4px;
 
 :root {
-  --colorBackground: #2b3434;
-  --colorAccent: #3f4b4c;
-  --colorText: #00cfff;
+  --colorBackground: #2e5553;
+  --colorBackgroundAlt: #508891;
+  --colorAccent: #e72492;
+  --colorText: #eee;
 }
 
 html {
@@ -21,7 +22,7 @@ html {
     transition-property: none;
     transition-duration: $transitionSpeed;
     scrollbar-width: thin;
-    scrollbar-color: var(--colorAccent) var(--colorBackground);
+    scrollbar-color: var(--colorBackgroundAlt) var(--colorBackground);
   }
 
   body {
@@ -31,13 +32,16 @@ html {
     font-weight: normal;
 
     background: var(--colorBackground);
-    color: var(--colorText);
 
     display: flex;
     flex-direction: column;
     padding: $spacing * 3 $spacing;
     gap: $spacing;
   }
+}
+
+svg path {
+  fill: var(--colorText);
 }
 
 input {
@@ -47,27 +51,20 @@ input {
 button {
   min-width: 45px;
   cursor: pointer;
-
-  svg path {
-    stroke: var(--colorText);
-  }
+  display: flex;
 
   &:hover,
   &:active {
-    background-color: var(--colorText);
-
-    svg path {
-      stroke: var(--colorAccent);
-    }
+    filter: brightness(125%);
   }
 }
 
 input,
 button {
-  background-color: var(--colorAccent);
+  color: var(--colorText);
+  background-color: var(--colorBackgroundAlt);
   border: none;
   border-radius: $borderRadius;
-  color: var(--colorText);
 }
 
 .list {
@@ -84,11 +81,26 @@ button {
   gap: $spacing;
   height: 45px;
 
-  > :first-child {
-    flex-grow: 1;
+  &.checked {
+    * {
+      text-decoration: line-through;
+    }
+
+    .item-check,
+    .item-input {
+      filter: brightness(70%);
+    }
   }
 
-  > :last-child {
+  .filler {
     min-width: 45px;
   }
+
+  .item-input {
+    flex-grow: 1;
+  }
+}
+
+.bg-transparent {
+  background-color: transparent;
 }

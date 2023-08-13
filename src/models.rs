@@ -9,13 +9,15 @@ use yew::prelude::*;
 pub struct Item {
     pub id: String,
     pub value: String,
+    pub checked: bool,
 }
 
 impl Default for Item {
     fn default() -> Self {
         Self {
             id: Uuid::new_v4().to_string(),
-            value: Default::default(),
+            value: String::new(),
+            checked: false,
         }
     }
 }
@@ -32,8 +34,9 @@ impl Default for State {
 }
 
 pub enum StateAction {
-    Remove { id: String },
-    Update { id: String, value: String },
+    Delete { id: String },
+    SetValue { id: String, value: String },
+    SetChecked { id: String, checked: bool },
 }
 
 impl Reducible for State {
@@ -41,13 +44,13 @@ impl Reducible for State {
 
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
         match action {
-            StateAction::Remove { id } => {
+            StateAction::Delete { id } => {
                 let mut items = self.items.clone();
                 items.retain(|i| i.id != id);
 
                 Self { items }.into()
             }
-            StateAction::Update { id, value } => {
+            StateAction::SetValue { id, value } => {
                 let mut items = self.items.clone();
 
                 if let Some(index) = items.iter().position(|i| i.id == id) {
@@ -56,6 +59,15 @@ impl Reducible for State {
 
                 if items.iter().all(|item| !item.value.is_empty()) {
                     items.push(Item::default());
+                }
+
+                Self { items }.into()
+            }
+            StateAction::SetChecked { id, checked } => {
+                let mut items = self.items.clone();
+
+                if let Some(index) = items.iter().position(|i| i.id == id) {
+                    items[index].checked = checked;
                 }
 
                 Self { items }.into()
