@@ -21,8 +21,9 @@ pub fn list() -> Html {
         .map(|(idx, item)| {
             html! {
                 <ItemContainer
+                    key={item.id.clone()}
                     item={item.clone()}
-                    deletable={idx != state.items.len() - 1}
+                    new_item={idx == state.items.len() - 1}
                 />
             }
         })

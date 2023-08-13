@@ -20,7 +20,7 @@ pub fn item_input(props: &Props) -> Html {
             move |_, (input_ref, item_id)| {
                 if let Some(input) = input_ref.cast::<HtmlInputElement>() {
                     let value = input.value();
-                    state.dispatch(StateAction::Update {
+                    state.dispatch(StateAction::SetValue {
                         id: item_id.to_owned(),
                         value,
                     });
@@ -30,11 +30,16 @@ pub fn item_input(props: &Props) -> Html {
         )
     };
 
+    let placeholder = if props.item.checked { "" } else { "Add item" };
+
     html! {
         <input ref={input_ref}
+            disabled={props.item.checked}
+            class="item-input"
             type="text"
             value={props.item.value.clone()}
-            onchange={on_updated}
+            oninput={on_updated}
+            placeholder={placeholder}
         />
     }
 }
