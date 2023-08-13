@@ -23,7 +23,7 @@ pub fn list() -> Html {
                 <ItemContainer
                     key={item.id.clone()}
                     item={item.clone()}
-                    draft={idx == state.items.len() - 1}
+                    new_item={idx == state.items.len() - 1}
                 />
             }
         })
