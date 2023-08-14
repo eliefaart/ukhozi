@@ -7,9 +7,8 @@ $transitionSpeed: 0.2s;
 $borderRadius: 4px;
 
 :root {
-  --colorBackground: #2e5553;
-  --colorBackgroundAlt: #508891;
-  --colorAccent: #e72492;
+  --colorBackground: #2a2b26;
+  --colorAccent: #48929e;
   --colorText: #eee;
 }
 
@@ -22,7 +21,7 @@ html {
     transition-property: none;
     transition-duration: $transitionSpeed;
     scrollbar-width: thin;
-    scrollbar-color: var(--colorBackgroundAlt) var(--colorBackground);
+    scrollbar-color: var(--colorAccent) var(--colorBackground);
   }
 
   body {
@@ -62,7 +61,7 @@ button {
 input,
 button {
   color: var(--colorText);
-  background-color: var(--colorBackgroundAlt);
+  background-color: var(--colorAccent);
   border: none;
   border-radius: $borderRadius;
 }

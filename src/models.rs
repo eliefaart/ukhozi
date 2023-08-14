@@ -34,9 +34,14 @@ impl Default for State {
 }
 
 pub enum StateAction {
+    // Delete an item
     Delete { id: String },
+    // Update the value of an item
     SetValue { id: String, value: String },
+    // Mark an item as (un)checked
     SetChecked { id: String, checked: bool },
+    // Remove non-last empty items from the list
+    Clean,
 }
 
 impl Reducible for State {
@@ -69,6 +74,14 @@ impl Reducible for State {
                 if let Some(index) = items.iter().position(|i| i.id == id) {
                     items[index].checked = checked;
                 }
+
+                Self { items }.into()
+            }
+            StateAction::Clean => {
+                let mut items = self.items.clone();
+                let item_id_last = items.last().map_or(String::new(), |item| item.id.clone());
+
+                items.retain(|item| !item.value.is_empty() || item.id == item_id_last);
 
                 Self { items }.into()
             }

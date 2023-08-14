@@ -30,6 +30,17 @@ pub fn item_input(props: &Props) -> Html {
         )
     };
 
+    let on_blur = {
+        let state = state.clone();
+
+        use_callback(
+            move |_, _| {
+                state.dispatch(StateAction::Clean);
+            },
+            (),
+        )
+    };
+
     let placeholder = if props.item.checked { "" } else { "Add item" };
 
     html! {
@@ -38,8 +49,9 @@ pub fn item_input(props: &Props) -> Html {
             class="item-input"
             type="text"
             value={props.item.value.clone()}
-            oninput={on_updated}
             placeholder={placeholder}
+            oninput={on_updated}
+            onblur={on_blur}
         />
     }
 }

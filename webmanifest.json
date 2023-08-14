@@ -2,8 +2,8 @@
 	"short_name": "ukhozi",
 	"name": "ukhozi",
 	"start_url": "/",
-	"background_color": "#2b3434",
-	"theme_color": "#00cfff",
+	"background_color": "#2a2b26",
+	"theme_color": "#48929e",
 	"display": "standalone",
 	"orientation": "portrait",
 	"icons": [
